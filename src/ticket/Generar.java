@@ -6,6 +6,7 @@
 package ticket;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -17,42 +18,52 @@ import java.util.Scanner;
  */
 public class Generar {
 
-    public void GenerarTicket(List<Formulario> ListaFormulario, List<Productos> ListaProductos, int FormaPago, double Efectivo) {
+    public void GenerarTicket(List<Formulario> ListaFormulario, List<Productos> ListaProductos, int FormaPago, double Efectivo, String NombreVendedor) {
         double subtotal = 0;
         int ArticulosVendidos = 0;
         Scanner sc = new Scanner(System.in);
         Date FechaActual = new Date();
         DateFormat Fecha = new SimpleDateFormat("dd/MM/yyyy");
         DateFormat Hora = new SimpleDateFormat("HH:mm:ss");
-        System.out.println("\t\t Nombre de la empresa \t\t");
-        System.out.println("Expedido en: Local Principal");
-        System.out.println("Dirección: Dirección del local");
-        System.out.println("Teléfono: 555-555-555");
+        DecimalFormat formato = new DecimalFormat("#.00");
+        
+        System.out.println();
+        System.out.println("****************************************");
+        System.out.println("\t Restaurante La Casa");
+        System.out.println("****************************************");
+        System.out.println("Expedido en: Centro Histórico");
+        System.out.println("Dirección: Madero #48 5to. Piso");
+        System.out.println("Teléfono: 12-34-56-78-90");
         System.out.println("R.F.C: XXXXXXXXXXXX");
-        System.out.println("E-mail: nombre@empresa.mx");
-        System.out.println("*********************************************************************");
-        System.out.println("Atendió: Fulano de Tal");
-        System.out.println("Cliente: " + ((Formulario) ListaFormulario.get(0)).NombreCliente);
+        System.out.println("E-mail: restaurante@lacasa.mx");
+        System.out.println("****************************************");
+        System.out.println("Atendió: "+NombreVendedor);
+        System.out.println("Cliente: " + ListaFormulario.get(0).NombreCliente);
         System.out.println("Fecha: " + Fecha.format(FechaActual) + "\t Hora: " + Hora.format(FechaActual));
-        System.out.println("*********************************************************************");
-        int c;
-        for (c = 0; c < ListaFormulario.size(); c++) {
-            System.out.println(((Formulario) ListaFormulario.get(c)).NombreCliente + " " + ((Formulario) ListaFormulario.get(c)).Direccion + " " + ((Formulario) ListaFormulario.get(c)).RFC);
+        System.out.println("****************************************");
+        
+        System.out.println("Cant.\tArtículo\tPrecio\tTotal");
+        
+        for (int c = 0; c < ListaProductos.size(); c++) {
+            System.out.println(ListaProductos.get(c).Cantidad + "\t" + ListaProductos.get(c).Producto + "\t$" + formato.format(ListaProductos.get(c).Precio) + "\t$" + formato.format((ListaProductos.get(c).Cantidad * ListaProductos.get(c).Precio)));
+            subtotal += ListaProductos.get(c).Cantidad * ListaProductos.get(c).Precio;
+            ArticulosVendidos += ListaProductos.get(c).Cantidad;
         }
-        for (c = 0; c < ListaProductos.size(); c++) {
-            System.out.println(((Productos) ListaProductos.get(c)).Cantidad + " " + ((Productos) ListaProductos.get(c)).Producto + " $" + ((Productos) ListaProductos.get(c)).Precio + " $" + (((Productos) ListaProductos.get(c)).Cantidad * ((Productos) ListaProductos.get(c)).Precio));
-            subtotal += ((Productos) ListaProductos.get(c)).Cantidad * ((Productos) ListaProductos.get(c)).Precio;
-            ArticulosVendidos += ((Productos) ListaProductos.get(c)).Cantidad;
-        }
+        System.out.println("****************************************");
         System.out.println("Artículos vendidos: " + ArticulosVendidos);
-        System.out.println("Subtotal: $" + subtotal);
-        System.out.println("IVA: $" + (subtotal * 0.16));
-        System.out.println("Total: $" + (subtotal + subtotal * 0.16));
+        System.out.println("****************************************");
+        System.out.println("Subtotal: $" + formato.format(subtotal));
+        System.out.println("IVA: $" +formato.format((subtotal * 0.16)));
+        System.out.println("Total: $" +formato.format((subtotal + (subtotal * 0.16))));
+        System.out.println("****************************************");
         if (FormaPago == 1) {
-            System.out.println("Tarjeta: $" + (subtotal + subtotal * 0.16));
+            System.out.println("Tarjeta: $" +formato.format((subtotal + (subtotal * 0.16))));
         } else if (FormaPago == 2) {
-            System.out.println("Efectivo: $" + Efectivo);
-            System.out.println("Cambio: $" + (Efectivo - subtotal + subtotal * 0.16));
+            System.out.println("Efectivo: $" + formato.format(Efectivo));
+            System.out.println("Cambio: $" +formato.format((Efectivo - (subtotal + (subtotal * 0.16)))));
         }
+        System.out.println();
+        System.out.println("\t Gracias por su visita");
+        System.out.println("****************************************");
     }
 }
