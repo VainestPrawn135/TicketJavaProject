@@ -20,11 +20,15 @@ public class Captura {
     }
 
     public void CapturaProductos() {
-        String Ingresa = "no";
-        double Efectivo = 0.0D;
+        String Ingresa = "no", NombreVendedor = " ";
+        double Efectivo = 0, subtotal = 0;
         Scanner sc = new Scanner(System.in);
         List<Productos> ListaProductos = new ArrayList<Productos>();
         List<Formulario> DatosCliente = new ArrayList<Formulario>();
+
+        System.out.print("Ingrese su nombre: " + NombreVendedor);
+        NombreVendedor = sc.nextLine();
+
         while ("no".equals(Ingresa)) {
             System.out.print("Ingrese producto: ");
             String Producto = sc.nextLine();
@@ -47,7 +51,13 @@ public class Captura {
             String Direccion = sc.nextLine();
             System.out.print("Ingrese RFC: ");
             String RFC = sc.nextLine();
-            System.out.print("1.- Tarjeta/2.-Efectivo: ");
+
+            for (int c = 0; c < ListaProductos.size(); c++) {
+                subtotal += ListaProductos.get(c).Cantidad * ListaProductos.get(c).Precio;
+            }
+            
+            System.out.println("Total: $" +(subtotal + (subtotal * 0.16)));
+            System.out.print("Modo de pago: 1.- Tarjeta/2.-Efectivo: ");
             int FormaPago = sc.nextInt();
             if (FormaPago == 2) {
                 System.out.print("Capture Efectivo: $");
@@ -55,7 +65,7 @@ public class Captura {
             }
             DatosCliente.add(new Formulario(Nombre, Telefono, Direccion, RFC));
             Generar imprime = new Generar();
-            imprime.GenerarTicket(DatosCliente, ListaProductos, FormaPago, Efectivo);
+            imprime.GenerarTicket(DatosCliente, ListaProductos, FormaPago, Efectivo, NombreVendedor);
         }
         DatosCliente.clear();
         ListaProductos.clear();
