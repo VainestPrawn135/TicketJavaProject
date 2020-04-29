@@ -22,7 +22,7 @@ public class Ticket {
         Scanner sc = new Scanner(System.in);
         do {
             Captura ticket;
-            System.out.println(" --- Este programa genera tickets de una tienda de ropa --- ");
+            System.out.println(" --- Este programa genera tickets de un restaurante --- ");
             System.out.println(" 1.-Capturar productos ");
             System.out.println(" 2.-Salir ");
             System.out.print(" Teclee una opción: ");
